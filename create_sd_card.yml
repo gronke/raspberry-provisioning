@@ -2,10 +2,8 @@
 - name: Create SD card image for unattended raspbian install
   hosts: localhost
   connection: local
-  vars:
-    dir:
-      tmp: ./.tmp
-      noobs: ./noobs-image
+  pre_tasks:
+    - include_vars: config/options.yml
 
   roles:
     - role: prepare_image
