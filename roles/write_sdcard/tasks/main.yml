@@ -1,0 +1,7 @@
+---
+
+- debug: var=src
+- debug: var=dest
+
+- name: Copy NOOBS to SD-Card
+  synchronize: src="{{src}}/" dest="{{dest}}" recursive=yes

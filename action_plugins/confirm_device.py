@@ -17,18 +17,37 @@ MESSAGES = {
   'diskInfo': 'The device %s will be deleted (%s)'
 }
 
+PARTITION_NAME = 'NOOBS'
+PARTITION_FILESYSTEM = 'FAT32'
+PARTITION_INDEX_TYPE = 'MBR'
 
 def convertSize(num, bsize=1024, suffix='B'):
-    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
-        if abs(num) < bsize:
-            return "%3.1f%s%s" % (num, unit, suffix)
-        num /= bsize
-    return "%.1f%s%s" % (num, 'Yi', suffix)
+  for unit in ['','K','M','G','T','P','E','Z']:
+      if abs(num) < bsize:
+          return "%3.1f%s%s" % (num, unit, suffix)
+      num /= bsize
+  return "%.1f%s%s" % (num, 'Yi', suffix)
+
+def format_disk(disk):
+  size = convertSize(get_device_info(disk).TotalSize, 1000)
+  cmd = ['diskutil', 'partitionDisk', disk, PARTITION_INDEX_TYPE, PARTITION_FILESYSTEM, PARTITION_NAME, size];
+  p = Popen(cmd, stdin=PIPE, stdout=PIPE)
+  (stdout, stderr) = p.communicate()
+  return '/dev/' + get_device_info(disk).DeviceIdentifier + 's1';
+
+def get_device_info(device):
+  cmd = ['diskutil', 'info', '-plist', device]
+  p = Popen(cmd, stdin=PIPE, stdout=PIPE)
+  (stdout, stderr) = p.communicate()
+  try:
+    plist = StringIO.StringIO(stdout)
+    return plistlib.readPlist(plist)
+  except ExpatError, emsg:
+    raise DiskUtilError('Error parsing plist: %s' % stdout)
 
 class ActionModule(object):
 
   def __init__(self, runner):
-    #print MESSAGES['selectDisk']
     self.runner = runner
     self.disk = None
 
@@ -51,18 +70,8 @@ class ActionModule(object):
     (stdout, stderr) = p.communicate()
     print(stdout)
 
-  def get_disk_info(self, device):
-    cmd = ['diskutil', 'info', '-plist', device]
-    p = Popen(cmd, stdin=PIPE, stdout=PIPE)
-    (stdout, stderr) = p.communicate()
-    try:
-      plist = StringIO.StringIO(stdout)
-      return plistlib.readPlist(plist)
-    except ExpatError, emsg:
-      raise DiskUtilError('Error parsing plist: %s' % stdout)
-
   def print_disk_info(self, disk):
-    disk_info = self.get_disk_info(disk)
+    disk_info = get_device_info(disk)
     print ''
     print MESSAGES['diskInfo'] % (disk, convertSize(disk_info.TotalSize, 1000))
 
@@ -79,7 +88,8 @@ class ActionModule(object):
 
     self.print_disks()
     while(self.disk is None):
-      disk = self.user_ask_disk()
+      #disk = self.user_ask_disk()
+      disk = '/dev/disk2'
       if(self.disk_exists(disk)):
         self.disk = disk
       else:
@@ -88,5 +98,9 @@ class ActionModule(object):
     confirmed = self.user_ask_confirm()
 
     result = { 'disk': self.disk, 'confirmed': confirmed }
+
+    if(confirmed):
+      partition_identifier = format_disk(self.disk);
+      result['partition'] = get_device_info(partition_identifier)
 
     return ReturnData(conn=conn, comm_ok=True, result=result)

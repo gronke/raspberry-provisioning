@@ -1,0 +1,24 @@
+---
+- name: Create SD card image for unattended raspbian install
+  hosts: localhost
+  connection: local
+  pre_tasks:
+    - include_vars: config/options.yml
+
+    - name: custom module
+      action: confirm_device
+      register: user_dialog
+
+    - debug: var=dir
+
+    - assert:
+        that:
+          - user_dialog.confirmed
+
+  roles:
+
+    - role: write_sdcard
+      src: "{{dir.noobs}}"
+      dest: "{{user_dialog.partition.MountPoint}}"
+
+    #- role: raspbi-config

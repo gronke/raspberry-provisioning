@@ -1,1 +1,1 @@
-runinstaller vt.cur_default=1 elevator=deadline silentinstall
+runinstaller quiet vt.cur_default=1 elevator=deadline silentinstall

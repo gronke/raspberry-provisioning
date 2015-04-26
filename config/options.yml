@@ -1,0 +1,5 @@
+---
+
+dir:
+  tmp: ./.tmp
+  noobs: ./noobs-image
