@@ -1,0 +1,19 @@
+---
+
+- assert:
+    that:
+      - local_image_path is defined
+      - target_dir is defined
+
+# - stat: path="./{{target_dir}}"
+#   register: target_dir_stat
+
+# - name: wipe target_dir
+#   shell: rm -r "{{target_dir}}"
+#   when: target_dir_stat.stat.exists
+
+- name: create target_dir
+  file: path="{{target_dir}}" state=directory
+
+- name: unzip noobs image
+  unarchive: src="{{local_image_path}}" dest="{{target_dir}}"

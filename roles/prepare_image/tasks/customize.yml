@@ -1,0 +1,12 @@
+---
+
+- name: Delete all OS images other than Raspbian
+  shell: ls | grep -v Raspbian | grep -v Data_Partition | xargs rm -rf
+  args:
+    chdir: "{{target_dir}}/os"
+
+- name: Clean flavours.json
+  template: src=flavours.json.jj2 dest="{{target_dir}}/os/Raspbian/flavours.json"
+
+- name: Configure Silent-Install
+  template: src=recovery.cmdline.jj2 dest="{{target_dir}}/recovery.cmdline"

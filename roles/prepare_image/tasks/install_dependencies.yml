@@ -1,0 +1,9 @@
+---
+
+- name: apt-get - make sure unzip is available
+  apt: name=unzip state=present
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: homebrew - make sure unzip is available
+  homebrew: name=unzip state=present
+  when: ansible_distribution == 'MacOSX'

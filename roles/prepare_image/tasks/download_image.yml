@@ -1,0 +1,12 @@
+---
+
+- assert:
+    that:
+      - noobs_url is defined
+      - local_image_path is defined
+
+- name: make sure tmp_dir exists
+  file: path="{{tmp_dir}}" state=directory
+
+- name: get noobs image
+  get_url: url="{{noobs_url}}" dest="{{local_image_path}}"

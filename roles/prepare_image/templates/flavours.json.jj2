@@ -1,0 +1,8 @@
+{
+ "flavours": [
+   {
+     "name": "Raspbian",
+     "description": "A Debian wheezy port, optimised for the Raspberry Pi"
+   }
+ ]
+}

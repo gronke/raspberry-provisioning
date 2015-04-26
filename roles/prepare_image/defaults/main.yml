@@ -1,0 +1,4 @@
+---
+
+noobs_url: http://downloads.raspberrypi.org/NOOBS_latest
+password: secret_ansible_password
