@@ -1,0 +1,9 @@
+---
+- name: Take care of recently added Raspbian zombies
+  hosts: zombies
+  remote_user: pi
+  sudo: true
+  #pre_tasks:
+
+  roles:
+    - role: raspbi-config

@@ -1,0 +1,7 @@
+---
+
+- name: disable raspbi-config in /etc/inittab
+  lineinfile: dest=/etc/inittab state=absent regexp="RPICFG_TO_ENABLE$"
+
+- name: make sure raspi-config shell script is absent
+  file: path=/etc/profile.d/raspi-config.sh state=absent
