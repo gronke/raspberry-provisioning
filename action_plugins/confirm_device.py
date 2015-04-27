@@ -35,6 +35,12 @@ def format_disk(disk):
   (stdout, stderr) = p.communicate()
   return '/dev/' + get_device_info(disk).DeviceIdentifier + 's1';
 
+def unmount_disk(disk):
+  cmd = ['diskutil', 'unmountDisk', disk];
+  p = Popen(cmd, stdin=PIPE, stdout=PIPE)
+  (stdout, stderr) = p.communicate()
+  return stdout;
+
 def get_device_info(device):
   cmd = ['diskutil', 'info', '-plist', device]
   p = Popen(cmd, stdin=PIPE, stdout=PIPE)
@@ -100,7 +106,8 @@ class ActionModule(object):
     result = { 'disk': self.disk, 'confirmed': confirmed }
 
     if(confirmed):
-      partition_identifier = format_disk(self.disk);
+      unmount_disk(self.disk)
+      partition_identifier = format_disk(self.disk)
       result['partition'] = get_device_info(partition_identifier)
 
     return ReturnData(conn=conn, comm_ok=True, result=result)
