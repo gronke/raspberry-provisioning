@@ -4,6 +4,7 @@
   connection: local
   pre_tasks:
     - include_vars: config/options.yml
+    - set_fact: SSH_PUBLIC_KEYS="{{ lookup('fileglob', './config/ssh/authorized_keys/**') }}"
 
   roles:
     - role: prepare_image

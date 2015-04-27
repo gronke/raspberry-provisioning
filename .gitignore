@@ -1,3 +1,4 @@
 .DS_Store
 noobs-image/
 .tmp/
+config/ssh/authorized_keys/*.pub
