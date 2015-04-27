@@ -9,9 +9,9 @@
 
 - shell: pwd
   register: pwd
-- set_fact: pwd={{pwd.stdout}}
-- set_fact: tmp_dir="{{pwd}}/{{tmp_dir}}"
-- set_fact: target_dir="{{pwd}}/{{target_dir}}"
+- set_fact: work_dir="{{pwd.stdout}}"
+- set_fact: tmp_dir="{{work_dir}}/{{tmp_dir}}"
+- set_fact: target_dir="{{work_dir}}/{{target_dir}}"
 - set_fact: local_image_path="{{tmp_dir}}/noobs_latest.zip"
 
 - include: install_dependencies.yml
