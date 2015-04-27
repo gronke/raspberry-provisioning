@@ -17,8 +17,7 @@ sed /tmp/2/etc/fstab -i -e "s|^.* / |${part2}  / |"
 sed /tmp/2/etc/fstab -i -e "s|^.* /boot |${part1}  /boot |"
 
 # Inject SSH
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-AUTHORIZED_KEYS_FILE="$DIR/authorized_keys"
+AUTHORIZED_KEYS_FILE="/mnt/authorized_keys"
 mkdir /tmp/2/root/.ssh/
 mkdir /tmp/2/home/pi/.ssh/
 cat "$AUTHORIZED_KEYS_FILE" >> /tmp/2/root/.ssh/authorized_keys

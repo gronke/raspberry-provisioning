@@ -3,7 +3,7 @@
   hosts: zombies
   remote_user: pi
   sudo: true
-  #pre_tasks:
-
   roles:
     - role: raspbi-config
+    - role: system_upgrade
+    - role: base_system
