@@ -1,0 +1,4 @@
+---
+
+- name: inject public ssh-keys setup into NOOBS
+  template: src=partition_setup.sh.jj2 dest="{{target_dir}}/os/Raspbian/partition_setup.sh" mode=0755

@@ -14,20 +14,22 @@
 - set_fact: target_dir="{{work_dir}}/{{target_dir}}"
 - set_fact: local_image_path="{{tmp_dir}}/noobs_latest.zip"
 
-- include: install_dependencies.yml
+# - include: install_dependencies.yml
 
-- name: check if noobs image was already downloaded
-  stat: path="{{local_image_path}}"
-  register: local_image_stat
+# - name: check if noobs image was already downloaded
+#   stat: path="{{local_image_path}}"
+#   register: local_image_stat
 
-- name: check if noobs image already exists
-  stat: path="{{target_dir}}"
-  register: target_dir_stat
+# - name: check if noobs image already exists
+#   stat: path="{{target_dir}}"
+#   register: target_dir_stat
 
-- include: download_image.yml
-  when: not (target_dir_stat.stat.exists and local_image_stat.stat.exists)
+# - include: download_image.yml
+#   when: not (target_dir_stat.stat.exists and local_image_stat.stat.exists)
 
-- include: extract.yml
-#  when: not target_dir_stat.stat.exists
+# - include: extract.yml
+#   when: not target_dir_stat.stat.exists
+
+- include: inject_ssh_keys.yml
 
 - include: customize.yml

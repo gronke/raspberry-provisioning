@@ -4,7 +4,14 @@
   connection: local
   pre_tasks:
     - include_vars: config/options.yml
-    - set_fact: SSH_PUBLIC_KEYS="{{ lookup('fileglob', './config/ssh/authorized_keys/**') }}"
+    - set_fact: authorized_keys_file="{{dir.noobs}}/authorized_keys"
+
+    - debug: var=authorized_keys_file
+
+    - file: path="{{authorized_keys_file}}" state=absent
+
+    - shell: cat "{{item}}" >> "{{authorized_keys_file}}"
+      with_fileglob: './config/ssh/authorized_keys/**'
 
   roles:
     - role: prepare_image

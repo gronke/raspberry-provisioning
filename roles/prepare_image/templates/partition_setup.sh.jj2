@@ -17,14 +17,12 @@ sed /tmp/2/etc/fstab -i -e "s|^.* / |${part2}  / |"
 sed /tmp/2/etc/fstab -i -e "s|^.* /boot |${part1}  /boot |"
 
 # Inject SSH
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+AUTHORIZED_KEYS_FILE="$DIR/authorized_keys"
 mkdir /tmp/2/root/.ssh/
-{% for key in SSH_PUBLIC_KEYS %}
-cat "{{key}}" >> /tmp/2/root/.ssh/authorized_keys
-{% endfor %}
 mkdir /tmp/2/home/pi/.ssh/
-{% for key in SSH_PUBLIC_KEYS %}
-cat "{{key}}" >> /tmp/2/home/pi/.ssh/authorized_keys
-{% endfor %}
+cat "$AUTHORIZED_KEYS_FILE" >> /tmp/2/root/.ssh/authorized_keys
+cat "$AUTHORIZED_KEYS_FILE" >> /tmp/2/home/pi/.ssh/authorized_keys
 
 umount /tmp/1
 umount /tmp/2
