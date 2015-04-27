@@ -6,7 +6,8 @@
     - include_vars: config/options.yml
     - set_fact: authorized_keys_file="{{dir.noobs}}/authorized_keys"
 
-    - debug: var=authorized_keys_file
+    - name: make sure NOOBS directory exists
+      file: path="{{dir.noobs}}" state=directory mode=0755
 
     - file: path="{{authorized_keys_file}}" state=absent
 
@@ -17,4 +18,3 @@
     - role: prepare_image
       target_dir: "{{dir.noobs}}"
       tmp_dir: "{{dir.tmp}}"
-    #- role: raspbi-config
