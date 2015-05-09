@@ -12,6 +12,8 @@
 #   shell: rm -r "{{target_dir}}"
 #   when: target_dir_stat.stat.exists
 
+- debug: msg="Extract NOOBS to {{target_dir}}"
+
 - name: create target_dir
   file: path="{{target_dir}}" state=directory
 
