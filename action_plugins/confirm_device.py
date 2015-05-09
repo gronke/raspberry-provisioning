@@ -94,8 +94,7 @@ class ActionModule(object):
 
     self.print_disks()
     while(self.disk is None):
-      #disk = self.user_ask_disk()
-      disk = '/dev/disk2'
+      disk = self.user_ask_disk()
       if(self.disk_exists(disk)):
         self.disk = disk
       else:
