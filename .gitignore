@@ -2,3 +2,4 @@
 noobs-image/
 .tmp/
 config/ssh/authorized_keys/*.pub
+action_plugins/*.pyc
