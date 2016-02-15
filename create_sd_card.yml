@@ -14,6 +14,8 @@
     - shell: cat "{{item}}" >> "{{authorized_keys_file}}"
       with_fileglob: './config/ssh/authorized_keys/**'
 
+    - shell: echo "" >> "{{authorized_keys_file}}"
+
   roles:
     - role: prepare_image
       target_dir: "{{dir.noobs}}"
